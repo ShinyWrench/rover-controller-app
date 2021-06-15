@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const APP_NAME = 'Rover Command';
+
 void main() {
   runApp(MyApp());
 }
@@ -8,42 +10,73 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: APP_NAME,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Rover Command'),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(APP_NAME),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        ControlButton(color: null),
+                        ControlButton(color: Colors.orange),
+                        ControlButton(color: null),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        ControlButton(color: Colors.orange),
+                        ControlButton(color: null),
+                        ControlButton(color: Colors.orange),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        ControlButton(color: null),
+                        ControlButton(color: Colors.orange),
+                        ControlButton(color: null),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                child: Row(
+              children: [],
+            ))
+          ],
+        ),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class ControlButton extends StatelessWidget {
+  ControlButton({this.color});
 
-  final String title;
+  final Color color;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Hiya buddy!'),
-          ],
+    return Expanded(
+      child: TextButton(
+        child: Container(
+          color: color,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: null,
       ),
     );
   }
