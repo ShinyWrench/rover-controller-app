@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:rover_controller_app/pages/control_page.dart';
 
-const APP_NAME = 'Rover Command';
+const APP_NAME = 'Rover Controller';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  MyApp() {
+    // TODO: Do Bluetooth init here
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,70 +19,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(APP_NAME),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        ControlButton(color: null),
-                        ControlButton(color: Colors.orange),
-                        ControlButton(color: null),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        ControlButton(color: Colors.orange),
-                        ControlButton(color: null),
-                        ControlButton(color: Colors.orange),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        ControlButton(color: null),
-                        ControlButton(color: Colors.orange),
-                        ControlButton(color: null),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-                child: Row(
-              children: [],
-            ))
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ControlButton extends StatelessWidget {
-  ControlButton({this.color});
-
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: TextButton(
-        child: Container(
-          color: color,
-        ),
-        onPressed: () {},
-      ),
+      // TODO: use StreamBuilder here like in flutter_blue example
+      home: ControlPage(),
     );
   }
 }
