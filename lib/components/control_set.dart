@@ -12,7 +12,7 @@ class ControlSet extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                ControlButton(color: null),
+                ControlButton(),
                 ControlButton(
                   color: Colors.orange,
                   onPressed: () => _commandSender.move(1),
@@ -28,17 +28,23 @@ class ControlSet extends StatelessWidget {
                   color: Colors.orange,
                   onPressed: () => _commandSender.turn(-1),
                 ),
-                ControlButton(color: null),
-                ControlButton(color: Colors.orange),
+                ControlButton(),
+                ControlButton(
+                  color: Colors.orange,
+                  onPressed: () => _commandSender.turn(1),
+                ),
               ],
             ),
           ),
           Expanded(
             child: Row(
               children: [
-                ControlButton(color: null),
-                ControlButton(color: Colors.orange),
-                ControlButton(color: null),
+                ControlButton(),
+                ControlButton(
+                  color: Colors.orange,
+                  onPressed: () => _commandSender.move(-1),
+                ),
+                ControlButton(),
               ],
             ),
           ),

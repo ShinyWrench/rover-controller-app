@@ -4,7 +4,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 class BluetoothOffPage extends StatelessWidget {
   BluetoothOffPage({required this.state});
 
-  final BluetoothState state;
+  final BluetoothState? state;
 
   @override
   Widget build(BuildContext context) {

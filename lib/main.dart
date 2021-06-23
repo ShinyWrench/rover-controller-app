@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:rover_controller_app/pages/bluetooth_off_page.dart';
 import 'package:rover_controller_app/pages/control_page.dart';
 
 const APP_NAME = 'Rover Controller';
@@ -8,10 +10,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp() {
-    // TODO: Do Bluetooth init here
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +18,28 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // TODO: use StreamBuilder here like in flutter_blue example
-      home: ControlPage(),
+      home: FutureBuilder<BluetoothState>(
+          future: FlutterBluetoothSerial.instance.state,
+          builder: (c, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data == BluetoothState.STATE_ON) {
+                return ControlPage();
+              } else {
+                return BluetoothOffPage(state: snapshot.data);
+              }
+            } else if (snapshot.hasError) {
+              print("Bluetooth error");
+              return BluetoothOffPage(state: BluetoothState.UNKNOWN);
+            } else {
+              return Scaffold(
+                body: Center(
+                  child: Text('Please wait'),
+                ),
+              );
+            }
+          }),
     );
   }
 }
+
+        // snapshot.data == BluetoothState.STATE_ON
