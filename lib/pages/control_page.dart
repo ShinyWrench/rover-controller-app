@@ -26,14 +26,14 @@ class _ControlPageState extends State<ControlPage> {
 
   Future<void> _connectToRover() async {
     String connectionLog = '';
-    int triesLeft = 3;
-    while (triesLeft-- > 0) {
+    final int numAttempts = 3;
+    for (int i = 0; i < numAttempts; i++) {
       connectionLog += await _commandSender.connect();
       if (_commandSender.isConnected() == true) {
         setState(() => _connected = true);
         return;
-      } else {
-        setState(() => _connectionStatus = 'Retrying...');
+      } else if (i < numAttempts - 1) {
+        setState(() => _connectionStatus = 'Retrying (${i + 2}/$numAttempts)');
       }
     }
     setState(() => _connectionStatus = connectionLog);
