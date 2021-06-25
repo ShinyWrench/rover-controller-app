@@ -17,7 +17,8 @@ class ControlSet extends StatelessWidget {
                 ControlButton(),
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.send(RoverCommand.forward),
+                  onTouch: (event) => _commandSender.send(RoverCommand.forward),
+                  onRelease: (event) => _commandSender.send(RoverCommand.stop),
                 ),
                 ControlButton(color: null),
               ],
@@ -28,15 +29,14 @@ class ControlSet extends StatelessWidget {
               children: [
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.send(RoverCommand.left),
+                  onTouch: (event) => _commandSender.send(RoverCommand.left),
+                  onRelease: (event) => _commandSender.send(RoverCommand.stop),
                 ),
+                ControlButton(),
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.send(RoverCommand.stop),
-                ),
-                ControlButton(
-                  color: Colors.orange,
-                  onPressed: () => _commandSender.send(RoverCommand.right),
+                  onTouch: (event) => _commandSender.send(RoverCommand.right),
+                  onRelease: (event) => _commandSender.send(RoverCommand.stop),
                 ),
               ],
             ),
@@ -47,7 +47,8 @@ class ControlSet extends StatelessWidget {
                 ControlButton(),
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.send(RoverCommand.reverse),
+                  onTouch: (event) => _commandSender.send(RoverCommand.reverse),
+                  onRelease: (event) => _commandSender.send(RoverCommand.stop),
                 ),
                 ControlButton(),
               ],
@@ -60,19 +61,21 @@ class ControlSet extends StatelessWidget {
 }
 
 class ControlButton extends StatelessWidget {
-  ControlButton({this.color, this.onPressed});
+  ControlButton({this.color, this.onTouch, this.onRelease});
 
   final Color? color;
-  final VoidCallback? onPressed;
+  final Function(PointerDownEvent)? onTouch;
+  final Function(PointerUpEvent)? onRelease;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TextButton(
+      child: Listener(
         child: Container(
           color: color,
         ),
-        onPressed: onPressed,
+        onPointerDown: onTouch,
+        onPointerUp: onRelease,
       ),
     );
   }
