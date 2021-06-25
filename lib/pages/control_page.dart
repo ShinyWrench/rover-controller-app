@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:rover_controller_app/components/control_set.dart';
+import 'package:rover_controller_app/services/command_sender.dart';
 
 const PAGE_TITLE = 'Rover Command';
 
@@ -11,25 +10,13 @@ class ControlPage extends StatefulWidget {
 }
 
 class _ControlPageState extends State<ControlPage> {
-  bool _pairedWithRover = false;
-  bool _connectedToRover = false;
+  final CommandSender _commandSender = CommandSender();
 
   @override
   void initState() {
     super.initState();
-    _searchAndConnect();
+    _commandSender.connect();
   }
-
-  // Future<void> _searchAndConnect() async {
-  //   try {
-  //     List<BluetoothDevice> devices =
-  //         await FlutterBluetoothSerial.instance.getBondedDevices();
-  //     if(devices.map((device) => device.name).contains('Blue Rover'))
-  //
-  //   } on PlatformException {
-  //     print("_searchAndConnect error");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +26,7 @@ class _ControlPageState extends State<ControlPage> {
       ),
       body: Column(
         children: [
-          _connectedToRover
+          _commandSender.isConnected()
               ? ControlSet()
               : Expanded(
                   child: Center(
