@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rover_controller_app/services/command_sender.dart';
+import 'package:rover_controller_app/constants.dart';
 
 class ControlSet extends StatelessWidget {
-  final CommandSender _commandSender = CommandSender();
+  ControlSet({required commandSender}) : this._commandSender = commandSender;
+  final CommandSender _commandSender;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class ControlSet extends StatelessWidget {
                 ControlButton(),
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.move(1),
+                  onPressed: () => _commandSender.send(RoverCommand.forward),
                 ),
                 ControlButton(color: null),
               ],
@@ -26,12 +28,15 @@ class ControlSet extends StatelessWidget {
               children: [
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.turn(-1),
+                  onPressed: () => _commandSender.send(RoverCommand.left),
                 ),
-                ControlButton(),
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.turn(1),
+                  onPressed: () => _commandSender.send(RoverCommand.stop),
+                ),
+                ControlButton(
+                  color: Colors.orange,
+                  onPressed: () => _commandSender.send(RoverCommand.right),
                 ),
               ],
             ),
@@ -42,7 +47,7 @@ class ControlSet extends StatelessWidget {
                 ControlButton(),
                 ControlButton(
                   color: Colors.orange,
-                  onPressed: () => _commandSender.move(-1),
+                  onPressed: () => _commandSender.send(RoverCommand.reverse),
                 ),
                 ControlButton(),
               ],

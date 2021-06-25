@@ -4,6 +4,10 @@ import 'package:rover_controller_app/services/command_sender.dart';
 
 const PAGE_TITLE = 'Rover Command';
 
+// TODO: Use https://pub.dev/packages/simple_logger package
+//       Use it instead of print
+//       Use it to log connectionLog
+
 class ControlPage extends StatefulWidget {
   @override
   _ControlPageState createState() => _ControlPageState();
@@ -11,11 +15,29 @@ class ControlPage extends StatefulWidget {
 
 class _ControlPageState extends State<ControlPage> {
   final CommandSender _commandSender = CommandSender();
+  bool _connected = false;
+  String _connectionStatus = 'Connecting...';
 
   @override
   void initState() {
     super.initState();
-    _commandSender.connect();
+    _connectToRover();
+  }
+
+  Future<void> _connectToRover() async {
+    String connectionLog = '';
+    int triesLeft = 3;
+    while (triesLeft-- > 0) {
+      connectionLog += await _commandSender.connect();
+      if (_commandSender.isConnected() == true) {
+        setState(() => _connected = true);
+        return;
+      } else {
+        setState(() => _connectionStatus = 'Retrying...');
+      }
+    }
+    setState(() => _connectionStatus = connectionLog);
+    print(connectionLog);
   }
 
   @override
@@ -26,11 +48,11 @@ class _ControlPageState extends State<ControlPage> {
       ),
       body: Column(
         children: [
-          _commandSender.isConnected()
-              ? ControlSet()
+          _connected
+              ? ControlSet(commandSender: _commandSender)
               : Expanded(
                   child: Center(
-                    child: Text('Waiting to pair or connect...'),
+                    child: Text(_connectionStatus),
                   ),
                 ),
           Expanded(

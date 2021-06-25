@@ -17,7 +17,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO: use StreamBuilder here like in flutter_blue example
       home: FutureBuilder<BluetoothState>(
           future: FlutterBluetoothSerial.instance.state,
           builder: (c, snapshot) {
