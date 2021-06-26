@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rover_controller_app/components/control_set.dart';
 import 'package:rover_controller_app/services/command_sender.dart';
-
-const PAGE_TITLE = 'Rover Command';
-
-// TODO: Use https://pub.dev/packages/simple_logger package
-//       Use it instead of print
-//       Use it to log connectionLog
+import 'package:rover_controller_app/constants.dart';
+import 'package:simple_logger/simple_logger.dart';
 
 class ControlPage extends StatefulWidget {
   @override
@@ -17,18 +13,28 @@ class _ControlPageState extends State<ControlPage> {
   final CommandSender _commandSender = CommandSender();
   bool _connected = false;
   String _connectionStatus = 'Connecting...';
+  String _connectionLog = '';
+
+  final SimpleLogger _logger = SimpleLogger();
 
   @override
   void initState() {
     super.initState();
+    _logger.setLevel(
+      Level.INFO,
+      includeCallerInfo: true,
+    );
+    _logger.onLogged = (string, info) {
+      print(string);
+    };
     _connectToRover();
   }
 
   Future<void> _connectToRover() async {
-    String connectionLog = '';
     final int numAttempts = 3;
     for (int i = 0; i < numAttempts; i++) {
-      connectionLog += await _commandSender.connect();
+      String logMessage = await _commandSender.connect();
+      _connectionLog += _logger.info(logMessage).toString() + '\n\n';
       if (_commandSender.isConnected() == true) {
         setState(() => _connected = true);
         return;
@@ -36,15 +42,15 @@ class _ControlPageState extends State<ControlPage> {
         setState(() => _connectionStatus = 'Retrying (${i + 2}/$numAttempts)');
       }
     }
-    setState(() => _connectionStatus = connectionLog);
-    print(connectionLog);
+    setState(() =>
+        _connectionStatus = 'Connection failed after $numAttempts tries.');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(PAGE_TITLE),
+        title: Text(kControlPageTitle),
       ),
       body: Column(
         children: [
@@ -55,10 +61,13 @@ class _ControlPageState extends State<ControlPage> {
                     child: Text(_connectionStatus),
                   ),
                 ),
-          Expanded(
-              child: Row(
-            children: [],
-          ))
+          _connected
+              ? Expanded(
+                  child: Container(),
+                )
+              : Expanded(
+                  child: SingleChildScrollView(child: Text(_connectionLog)),
+                ),
         ],
       ),
     );

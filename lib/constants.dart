@@ -5,3 +5,6 @@ enum RoverCommand {
   left,
   right,
 }
+
+const String kAppName = 'Rover Controller';
+const String kControlPageTitle = 'Rover Command';

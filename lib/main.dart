@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:rover_controller_app/pages/bluetooth_off_page.dart';
 import 'package:rover_controller_app/pages/control_page.dart';
-
-const APP_NAME = 'Rover Controller';
+import 'package:rover_controller_app/constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: APP_NAME,
+      title: kAppName,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
